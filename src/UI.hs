@@ -25,7 +25,7 @@ runUi = liftIO . withGtkApp $ \application -> do
   loadStyles
 
   _uiForm       <- createUiForm defaultDims
-  mainWindow    <- new Gtk.Window [#title := "LambdaMine", #resizable := False]
+  mainWindow    <- new Gtk.Window [#title := "LambdaSweep", #resizable := False]
   mainContainer <- new Gtk.Box [#orientation := Gtk.OrientationVertical]
 
   flip runUiT Ui { .. } $ do
