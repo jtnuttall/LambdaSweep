@@ -1,0 +1,23 @@
+conf_forward:
+  options_ghc:
+    - -XDataKinds
+    - -XDeriveTraversable
+    - -XDoAndIfThenElse
+    - -XExistentialQuantification
+    - -XFlexibleContexts
+    - -XFlexibleInstances
+    - -XFunctionalDependencies
+    - -XGeneralizedNewtypeDeriving
+    - -XLambdaCase
+    - -XMultiParamTypeClasses
+    - -XMultiWayIf
+    - -XNamedFieldPuns
+    - -XNoImplicitPrelude
+    - -XOverloadedStrings
+    - -XRankNTypes
+    - -XRecordWildCards
+    - -XScopedTypeVariables
+    - -XTupleSections
+    - -XTypeFamilies
+    - -XTypeApplications
+    - -XViewPatterns

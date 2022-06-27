@@ -1,0 +1,95 @@
+name: LambdaSweep
+version: 0.1.0.0
+github: "jtnuttall/LambdaSweep"
+license: BSD3
+author: "Jeremy Nuttall"
+maintainer: "jeremy@jeremy-nuttall.com"
+copyright: "2022 Jeremy Nuttall"
+
+extra-source-files:
+  - README.md
+  - ChangeLog.md
+
+# Metadata used when publishing your package
+synopsis: Minesweeper clone in Haskell
+category: Game
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description: Please see the README on GitHub at <https://github.com/jtnuttall/LambdaSweep#readme>
+
+data-files: assets/**/*
+
+dependencies:
+  - base >= 4.7 && < 5
+  - containers
+  - dunai
+  - gi-gio
+  - gi-gdk
+  - gi-glib
+  - gi-gtk
+  - haskell-gi-base
+  - lens
+  - optparse-simple
+  - mwc-random
+  - random
+  - rio
+  - say
+  - template-haskell
+  - text
+  - transformers
+  - unliftio
+  - vector
+
+default-extensions:
+  - DataKinds
+  - DeriveTraversable
+  - DeriveGeneric
+  - ExistentialQuantification
+  - FlexibleContexts
+  - FlexibleInstances
+  - FunctionalDependencies
+  - GeneralizedNewtypeDeriving
+  - LambdaCase
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NamedFieldPuns
+  - NoImplicitPrelude
+  - NoMonomorphismRestriction
+  - OverloadedStrings
+  - RankNTypes
+  - RecordWildCards
+  - RecursiveDo
+  - ScopedTypeVariables
+  - TypeFamilies
+  - TupleSections
+  - ViewPatterns
+
+library:
+  source-dirs: src
+  ghc-options:
+    - -O2
+
+executables:
+  LambdaSweep-exe:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -O2
+    dependencies:
+      - LambdaSweep
+
+tests:
+  LambdaSweep-test:
+    main: Spec.hs
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - LambdaSweep

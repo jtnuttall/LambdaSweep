@@ -1,0 +1,201 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           LambdaSweep
+version:        0.1.0.0
+synopsis:       Minesweeper clone in Haskell
+description:    Please see the README on GitHub at <https://github.com/jtnuttall/LambdaSweep#readme>
+category:       Game
+homepage:       https://github.com/jtnuttall/LambdaSweep#readme
+bug-reports:    https://github.com/jtnuttall/LambdaSweep/issues
+author:         Jeremy Nuttall
+maintainer:     jeremy@jeremy-nuttall.com
+copyright:      2022 Jeremy Nuttall
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+data-files:
+    assets/img/flag.png
+    assets/img/mine.png
+    assets/img/smiley.png
+    assets/theme/default.css
+
+source-repository head
+  type: git
+  location: https://github.com/jtnuttall/LambdaSweep
+
+library
+  exposed-modules:
+      ActionMsg
+      Game
+      Game.FRP
+      Game.State
+      Grid
+      Import
+      Import.Lens
+      Run
+      UI
+      UI.Helper
+      UI.MonadUI
+  other-modules:
+      Paths_LambdaSweep
+  hs-source-dirs:
+      src
+  default-extensions:
+      DataKinds
+      DeriveTraversable
+      DeriveGeneric
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GeneralizedNewtypeDeriving
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      NoImplicitPrelude
+      NoMonomorphismRestriction
+      OverloadedStrings
+      RankNTypes
+      RecordWildCards
+      RecursiveDo
+      ScopedTypeVariables
+      TypeFamilies
+      TupleSections
+      ViewPatterns
+  ghc-options: -O2
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , dunai
+    , gi-gdk
+    , gi-gio
+    , gi-glib
+    , gi-gtk
+    , haskell-gi-base
+    , lens
+    , mwc-random
+    , optparse-simple
+    , random
+    , rio
+    , say
+    , template-haskell
+    , text
+    , transformers
+    , unliftio
+    , vector
+  default-language: Haskell2010
+
+executable LambdaSweep-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_LambdaSweep
+  hs-source-dirs:
+      app
+  default-extensions:
+      DataKinds
+      DeriveTraversable
+      DeriveGeneric
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GeneralizedNewtypeDeriving
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      NoImplicitPrelude
+      NoMonomorphismRestriction
+      OverloadedStrings
+      RankNTypes
+      RecordWildCards
+      RecursiveDo
+      ScopedTypeVariables
+      TypeFamilies
+      TupleSections
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -O2
+  build-depends:
+      LambdaSweep
+    , base >=4.7 && <5
+    , containers
+    , dunai
+    , gi-gdk
+    , gi-gio
+    , gi-glib
+    , gi-gtk
+    , haskell-gi-base
+    , lens
+    , mwc-random
+    , optparse-simple
+    , random
+    , rio
+    , say
+    , template-haskell
+    , text
+    , transformers
+    , unliftio
+    , vector
+  default-language: Haskell2010
+
+test-suite LambdaSweep-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_LambdaSweep
+  hs-source-dirs:
+      test
+  default-extensions:
+      DataKinds
+      DeriveTraversable
+      DeriveGeneric
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GeneralizedNewtypeDeriving
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      NoImplicitPrelude
+      NoMonomorphismRestriction
+      OverloadedStrings
+      RankNTypes
+      RecordWildCards
+      RecursiveDo
+      ScopedTypeVariables
+      TypeFamilies
+      TupleSections
+      ViewPatterns
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      LambdaSweep
+    , base >=4.7 && <5
+    , containers
+    , dunai
+    , gi-gdk
+    , gi-gio
+    , gi-glib
+    , gi-gtk
+    , haskell-gi-base
+    , lens
+    , mwc-random
+    , optparse-simple
+    , random
+    , rio
+    , say
+    , template-haskell
+    , text
+    , transformers
+    , unliftio
+    , vector
+  default-language: Haskell2010

@@ -1,0 +1,91 @@
+label.status {
+  font-weight: bold;
+  padding: 10px;
+}
+
+box.status {
+  min-width: 10rem;
+}
+
+input {
+  border-width: 2px;
+}
+
+button.cell {
+  color: #000;
+  border: 1px solid #111111;
+  background-color: #fff;
+  border-radius: 0;
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  transition: background-color 250ms ease-in-out;
+}
+
+button.cell:hover {
+  background-color: aliceblue;
+}
+
+button.cell.flagged {
+  background-image: url("../img/flag.png");
+  background-origin: content-box;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+grid.end-loss button.cell.revealed.mined {
+  background-color: red;
+  background-image: url("../img/mine.png");
+  background-origin: content-box;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+grid.end-win button.cell.revealed.mined {
+  background-color: limegreen;
+  background-image: url("../img/smiley.png");
+  background-origin: content-box;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+button.cell.revealed {
+  background-color: lightgrey;
+}
+
+button.cell.revealed:hover {
+  background-color: lightsteelblue;
+}
+
+button.cell.revealed-1 {
+  color: blue;
+}
+
+button.cell.revealed-2 {
+  color: green;
+}
+
+button.cell.revealed-3 {
+  color: red;
+}
+
+button.cell.revealed-4 {
+  color: purple;
+}
+
+button.cell.revealed-5 {
+  color: sienna;
+}
+
+button.cell.revealed-6 {
+  color: royalblue;
+}
+
+button.cell.revealed-7 {
+  color: orange;
+}
+
+button.cell.revealed-8 {
+  color: lightcoral;
+}
