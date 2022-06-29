@@ -95,18 +95,17 @@ addClasses o classes = do
   sc <- Gtk.widgetGetStyleContext o
   traverse_ (#addClass sc) classes
 
+
 --------------------------------------------------------------------------------
 -- GTK Entry helpers
 --------------------------------------------------------------------------------
 getIntegralInput
   :: (MonadIO m, Gtk.IsEntry o, Integral a, IsLabel "getText" (o -> m Text))
-  => o
-  -> a
+  => a
+  -> o
   -> m a
-getIntegralInput o defaultValue =
+getIntegralInput defaultValue o =
   either (const defaultValue) fst . T.decimal <$> #getText o
-
-    -- either (const (fst defaultDims)) fst . T.decimal <$> #getText heightEntry
 
 -- Should be expanded to permit masks that are more aware of their input.
 type Mask = Text -> Text

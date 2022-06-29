@@ -18,6 +18,7 @@ import           RIO.State                      ( MonadState(..) )
 import           UI.Helper
 import           UnliftIO.Concurrent            ( forkIO )
 
+
 --------------------------------------------------------------------------------
 -- UI State & Context
 --------------------------------------------------------------------------------
@@ -101,13 +102,10 @@ instance (MonadIO m) => MonadState UiState (UiT m) where
 runUiT :: (MonadIO m) => UiT m a -> Ui -> m a
 runUiT (UiT f) = runReaderT f
 
---------------------------------------------------------------------------------
--- UI construction
---------------------------------------------------------------------------------
+
 --------------------------------------------------------------------------------
 -- General UI actions
 --------------------------------------------------------------------------------
--- updateStatus :: (MonadUnliftIO m) => (HasGameState s) => s -> m ()
 updateStatus :: (MonadIO m, HasGameState s) => s -> UiT m ()
 updateStatus newState = do
   UiStatus {..} <- view uiStatusL
@@ -139,10 +137,8 @@ handleFormSubmit = do
   heightEntry <- view heightEntryL
   widthEntry  <- view widthEntryL
 
-  rows        <-
-    either (const (fst defaultDims)) fst . T.decimal <$> #getText heightEntry
-  cols <-
-    either (const (snd defaultDims)) fst . T.decimal <$> #getText widthEntry
+  rows        <- getIntegralInput (fst defaultDims) heightEntry
+  cols        <- getIntegralInput (snd defaultDims) widthEntry
 
   initializeGrid (rows, cols)
 
@@ -151,6 +147,7 @@ addFormHandlers = do
   formSubmit <- view formSubmitL
   withRunInIO $ \unlift -> void $ do
     void $ on formSubmit #clicked (unlift handleFormSubmit)
+
 
 --------------------------------------------------------------------------------
 -- Game communication
@@ -163,6 +160,7 @@ initializeGameSink = \case
     react  <- createGame =<< liftIO (newGameState 20 r c)
     reactL <?= react
   Just f -> pure f
+
 
 --------------------------------------------------------------------------------
 -- UI State initialization

@@ -5,7 +5,6 @@ module UI
 
 import           Data.GI.Base
 import qualified Data.Text.Read                as T
-import qualified GI.Gdk                        as Gdk
 import qualified GI.Gtk                        as Gtk
 import           Grid
 import           Import
@@ -35,6 +34,7 @@ withGtkApp f = void $ do
   app <- Gtk.new Gtk.Application []
   _   <- Gtk.on app #activate (f app)
   #run app Nothing
+
 
 -------------------------------------------------------------------------------
 -- UI construction
