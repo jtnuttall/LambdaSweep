@@ -30,13 +30,14 @@ initialCellState = CellState { revealed      = False
 makeProjectClassy ''CellState
 
 data GameState = GameState
-  { cellStates     :: Grid CellState
-  , endGame        :: EndGameState
-  , moveCount      :: Int
-  , flagsRemaining :: Int
-  , nRevealed      :: Int
-  , gridDims       :: GridPos
-  , nToReveal      :: Int
+  { cellStates :: Grid CellState
+  , endGame    :: EndGameState
+  , gridDims   :: GridPos
+  , nFlags     :: Int
+  , nMines     :: Int
+  , nRevealed  :: Int
+  , nTurns     :: Int
+  , nToReveal  :: Int
   }
   deriving (Show, Eq)
 
@@ -49,17 +50,15 @@ instance Ixed GameState where
   ix p = cellStatesL . ix p
 
 initialGameState :: GameState
-initialGameState = GameState { cellStates     = empty
-                             , endGame        = Continue
-                             , moveCount      = 0
-                             , flagsRemaining = 0
-                             , nRevealed      = 0
-                             , gridDims       = (0, 0)
-                             , nToReveal      = 0
+initialGameState = GameState { cellStates = empty
+                             , endGame    = Continue
+                             , nMines     = 0
+                             , nFlags     = 0
+                             , nRevealed  = 0
+                             , nTurns     = 0
+                             , gridDims   = (0, 0)
+                             , nToReveal  = 0
                              }
-
-count :: (Foldable t, Num b) => (a -> Bool) -> t a -> b
-count f = foldr' (bool id (+ 1) . f) 0
 
 newGameState
   :: (MonadIO m, PrimMonad m, PrimState m ~ RealWorld)
@@ -69,10 +68,12 @@ newGameState
   -> m GameState
 newGameState pct r c = do
   cellStates <- createGrid pct r c
+  let nMines = count mined cellStates
   pure initialGameState { cellStates
-                        , flagsRemaining = count mined cellStates
-                        , nToReveal      = count (not . mined) cellStates
-                        , gridDims       = dims cellStates
+                        , nFlags     = nMines
+                        , nMines
+                        , nToReveal  = size cellStates - nMines
+                        , gridDims   = dims cellStates
                         }
 
 createGrid
@@ -92,11 +93,15 @@ createGrid percent nRows nCols = do
 
   pure
     . fmap
-        (\((r, c), isMined) ->
-          initialCellState
-            &  adjacentMinesL
-            .~ (length . filter snd $ adjacent mines (r, c))
-            &  minedL
-            .~ isMined
+        (\((r, c), isMined) -> initialCellState
+          { adjacentMines = length . filter snd $ adjacent mines (r, c)
+          , mined         = isMined
+          }
         )
     $ mines
+
+--------------------------------------------------------------------------------
+-- Utility
+--------------------------------------------------------------------------------
+count :: (Foldable t, Num b) => (a -> Bool) -> t a -> b
+count f = foldr' (bool id (+ 1) . f) 0

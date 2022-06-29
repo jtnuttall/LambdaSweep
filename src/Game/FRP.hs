@@ -70,14 +70,14 @@ identity :: Category cat => cat a a
 identity = Cat.id
 
 -- | Switches between two signal functions. Evaluates to the first argument
--- until Just appears in the output of the signal function, then evaluates to
--- the second thereafter.
+-- until an event appears in the output of the signal function, then evaluates 
+-- to the second thereafter.
 switch :: (Monad m) => MSF m a (b, Event c) -> (c -> MSF m a b) -> MSF m a b
 switch sf sfC = MSF $ \a -> do
   (o, ct) <- unMSF sf a
   case o of
     (_, Event c) -> unMSF (sfC c) a
-    (b, NoEvent) -> return (b, switch ct sfC)
+    (b, NoEvent) -> pure (b, switch ct sfC)
 
 -- | Switch with delayed evaluation.
 dSwitch :: (Monad m) => MSF m a (b, Event c) -> (c -> MSF m a b) -> MSF m a b
@@ -86,6 +86,6 @@ dSwitch sf sfC = MSF $ \a -> do
   case o of
     (b, Event c) -> do
       (_, ct') <- unMSF (sfC c) a
-      return (b, ct')
-    (b, NoEvent) -> return (b, dSwitch ct sfC)
+      pure (b, ct')
+    (b, NoEvent) -> pure (b, dSwitch ct sfC)
 

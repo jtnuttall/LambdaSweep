@@ -12,8 +12,7 @@ import           Import
 import qualified RIO.HashSet                   as HS
 import           RIO.State
 
-createGame
-  :: (MonadUnliftIO m, MonadFix m) => GameState -> m (ActionMsg -> IO GameState)
+createGame :: (MonadUnliftIO m, MonadFix m) => GameState -> m ActionHandler
 createGame = reactBlockingWH . gameSF
 
 --------------------------------------------------------------------------------
@@ -25,9 +24,6 @@ gameSF initialState = proc msg -> do
       state' <- turn <<< unmineFirst -< (msg, state)
   end <- arr ((Continue /=) . (^. endGameL)) -< state'
   returnA -< (state', end)
-
-startTurn :: (Monad m) => MSF m GameState GameState
-startTurn = arr (cellStatesL . traverse . dirtyL .~ False)
 
 unmineFirst :: (Monad m) => MSF m (ActionMsg, GameState) (ActionMsg, GameState)
 unmineFirst = dSwitch (arr unmine) (const identity)
@@ -62,6 +58,9 @@ turn = switch
     )
   )
 
+startTurn :: (Monad m) => MSF m GameState GameState
+startTurn = arr (cellStatesL . traverse . dirtyL .~ False)
+
 chooseAction :: (Monad m) => MSF m (ActionMsg, GameState) GameState
 chooseAction = MSF $ \(msg, s) -> do
   (s', _) <- unMSF (chooseActionSF msg) (extractPos msg, s)
@@ -86,7 +85,7 @@ reveal :: forall m . (Monad m) => MSF m (GridPos, GameState) GameState
 reveal = proc (startPos, state) -> do
   dirty  <- cellsToReveal -< (state, startPos)
   state' <- revealCells   -< (state, dirty)
-  arr (moveCountL +~ 1)   -< state'
+  arr (nTurnsL +~ 1)   -< state'
  where
   revealCells = arr . uncurry $ foldr
     (\p ->
@@ -120,13 +119,15 @@ flag = arr (\(p, s) -> execState (flag' p) s)
   flag' :: GridPos -> State GameState ()
   flag' p = do
     revealed <- gets (^?! ix p . revealedL)
+    flagged  <- gets (^?! ix p . flaggedL)
+    nFlags   <- use nFlagsL
 
-    unless revealed $ do
-      flagged <- not <$> gets (^?! ix p . flaggedL)
+    let validSelection = not revealed && (nFlags > 0 || flagged)
 
-      if flagged then flagsRemainingL -= 1 else flagsRemainingL += 1
+    when validSelection $ do
+      if not flagged && nFlags > 0 then nFlagsL -= 1 else nFlagsL += 1
 
-      ix p . flaggedL .= flagged
+      ix p . flaggedL .= not flagged
       ix p . dirtyL .= True
 
 --------------------------------------------------------------------------------

@@ -12,7 +12,7 @@ data ActionMsg
   | FlagCell GridPos
   deriving (Show, Eq)
 
-type GameReactHandle = ActionMsg -> IO GameState
+type ActionHandler = ActionMsg -> IO GameState
 
 extractPos :: ActionMsg -> GridPos
 extractPos = \case

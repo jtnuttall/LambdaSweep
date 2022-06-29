@@ -5,6 +5,7 @@ import           Import
 import qualified RIO.Vector                    as V
 import qualified RIO.Vector.Partial            as VP
 
+
 type Row = Int
 type Col = Int
 type GridPos = (Row, Col)
@@ -31,6 +32,7 @@ type instance IxValue (Grid a) = a
 
 instance Ixed (Grid a) where
   ix (r, c) = _Wrapped' . ix r . ix c
+
 
 --------------------------------------------------------------------------------
 -- Grid utilities
@@ -74,13 +76,15 @@ iAdjacent mMax (r, c) = filter
   , (r + 1, c)
   , (r + 1, c + 1)
   ]
+{-# INLINE iAdjacent #-}
 
 iAdjacentSq :: (Row, Col) -> GridPos -> [GridPos]
 iAdjacentSq (maxR, maxC) (r, c) = filter
   (\(r', c') -> r' >= 0 && c' >= 0 && r' < maxR && c' < maxC)
   [(r - 1, c), (r, c - 1), (r, c + 1), (r + 1, c)]
+{-# INLINE iAdjacentSq #-}
 
-dims :: Grid a -> GridPos
+dims :: Grid a -> (Row, Col)
 dims (Grid g) = (V.length g, V.length (VP.head g))
 
 size :: Grid a -> Int
